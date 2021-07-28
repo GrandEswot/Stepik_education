@@ -1,25 +1,34 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
 
 def pytest_addoption(parser):
-    parser.addoption('--language', action='store', default=None,
-                     help="Choose language: ru/en-gb/es/fr")
+    parser.addoption('--browser_name', action='store', default="chrome",
+                     help="Choose browser: chrome or firefox")
+    parser.addoption('--language', action='store', default='ru',
+                     help="Choose language: ru, en, fr")
 
 
 @pytest.fixture(scope="function")
 def browser(request):
-    user_language = request.config.getoption("language")
-    options = Options()
-    options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
-    browser = webdriver.Chrome(options=options)
-    browser.get(f'https://selenium1py.pythonanywhere.com/{user_language}/catalogue/coders-at-work_207/')
-    # try:
-    #     print("\nOpen browser page with chosen language version")
-    #     browser.get(f'https://selenium1py.pythonanywhere.com/{user_language}/catalogue/coders-at-work_207/')
-    # except:
-    #     raise pytest.UsageError("--language should be ru/en-gb/es/fr")
+    browser_name = request.config.getoption("browser_name")
+    browser = None
+    if browser_name == "chrome":
+        from selenium.webdriver.chrome.options import Options
+
+        options = Options()
+        user_language = request.config.getoption("language")
+        options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
+        browser = webdriver.Chrome(options=options)
+        print("\nstart chrome browser for test..")
+    elif browser_name == "firefox":
+        fp = webdriver.FirefoxProfile()
+        user_language = request.config.getoption("language")
+        fp.set_preference("intl.accept_languages", user_language)
+        browser = webdriver.Firefox(firefox_profile=fp)
+        print("\nstart firefox browser for test..")
+    else:
+        raise pytest.UsageError("--browser_name should be chrome or firefox")
     yield browser
     print("\nquit browser..")
     browser.quit()
