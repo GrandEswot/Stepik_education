@@ -6,9 +6,18 @@ class BasePageLocators:
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
 
 
+class BasketPageLocators:
+    EMPTY_BASKET_MESSAGE = (By.CSS_SELECTOR, '#content_inner>p')
+    BASKET_ITEMS = (By.CSS_SELECTOR, 'div.basket-items')
+
+
 class LoginPageLocators:
     REGISTRATION_FORM = (By.ID, "register_form")
     LOGIN_FORM = (By.ID, "login_form")
+
+
+class MainPageLocators:
+    BASKET = (By.CSS_SELECTOR, 'span.btn-group')
 
 
 class ProductNameLocator:

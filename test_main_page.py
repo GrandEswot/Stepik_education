@@ -1,3 +1,4 @@
+from .pages.locators import MainPageLocators, BasketPageLocators
 from .pages.main_page import MainPage
 from .pages.login_page import LoginPage
 
@@ -12,8 +13,11 @@ def test_guest_can_go_to_login_page(browser):
     login_page.should_be_login_page()
 
 
-# def test_should_be_login_page(browser):
-#     login_page_link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
-#     login_page = LoginPage(browser, login_page_link)
-#     login_page.open()
-#     login_page.should_be_login_page()
+def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
+    page = MainPage(browser)
+    page.open_page('http://selenium1py.pythonanywhere.com')
+    page.go_to_basket_page()
+    page.is_not_element_present(*BasketPageLocators.BASKET_ITEMS)
+    page.is_element_present(*BasketPageLocators.EMPTY_BASKET_MESSAGE)
+
+

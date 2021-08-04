@@ -1,6 +1,7 @@
 import pytest
 import time
 
+from pages.locators import MainPageLocators, BasketPageLocators
 from .pages.ProductPage import ProductPage
 from .pages.links import ProductPageLink
 
@@ -32,6 +33,15 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser)
     page.open_page(link)
     page.go_to_login_page()
+
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = 'http://selenium1py.pythonanywhere.com/ru/catalogue/the-shellcoders-handbook_209/'
+    page = ProductPage(browser)
+    page.open_page(link)
+    page.go_to_basket_page()
+    page.is_not_element_present(*BasketPageLocators.BASKET_ITEMS)
+    page.is_element_present(*BasketPageLocators.EMPTY_BASKET_MESSAGE)
 
 
 @pytest.mark.xfail
