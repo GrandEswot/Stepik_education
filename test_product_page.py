@@ -1,6 +1,4 @@
 import pytest
-import time
-
 from .pages.locators import BasketPageLocators
 from .pages.product_page import ProductPage
 from .pages.links import ProductPageLink
@@ -15,12 +13,22 @@ class TestUserAddToBasketFromProductPage:
 
     @pytest.mark.need_review
     def test_user_can_add_product_to_basket(self, browser):
-        link = 'https://selenium1py.pythonanywhere.com/'
+        link = 'https://selenium1py.pythonanywhere.com/ru/catalogue/the-shellcoders-handbook_209/'
         product_page = ProductPage(browser)
         product_page.open_page(link)
         product_page.add_product_to_basket()
         product_page.name_assert()
         product_page.price_assert()
+
+
+@pytest.mark.need_review
+def test_guest_can_add_product_to_basket(browser):
+    link = 'https://selenium1py.pythonanywhere.com/ru/catalogue/the-shellcoders-handbook_209/'
+    product_page = ProductPage(browser)
+    product_page.open_page(link)
+    product_page.add_product_to_basket()
+    product_page.name_assert()
+    product_page.price_assert()
 
 
 @pytest.mark.need_review
